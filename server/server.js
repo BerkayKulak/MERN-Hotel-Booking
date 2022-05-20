@@ -1,9 +1,8 @@
 import express from "express";
+import router from "./routes/auth";
 
 const app = express();
 
-app.get("/api/:message", (req, res) => {
-  res.status(200).send(req.params.message);
-});
+app.use('/api', router);
 
 app.listen(8000, () => console.log(`Server is running on port 8000`));
