@@ -39,22 +39,32 @@ const userSchema = new Schema(
  */
 
 userSchema.pre("save", function (next) {
-    let user = this;
-    // hash password only if user is changing the password or registering for the first time
-    // make sure to use this otherwise each time user.save() is executed, password
-    // will get auto updated and you can't login with original password
-    if (user.isModified("password")) {
-      return bcrypt.hash(user.password, 12, function (err, hash) {
-        if (err) {
-          console.log("BCRYPT HASH ERR ", err);
-          return next(err);
-        }
-        user.password = hash;
-        return next();
-      });
-    } else {
+  let user = this;
+  // hash password only if user is changing the password or registering for the first time
+  // make sure to use this otherwise each time user.save() is executed, password
+  // will get auto updated and you can't login with original password
+  if (user.isModified("password")) {
+    return bcrypt.hash(user.password, 12, function (err, hash) {
+      if (err) {
+        console.log("BCRYPT HASH ERR ", err);
+        return next(err);
+      }
+      user.password = hash;
       return next();
+    });
+  } else {
+    return next();
+  }
+});
+
+userSchema.methods.comparePassword = function (password, next) {
+  bcrypt.compare(password, this.password, function (err, match) {
+    if (err) {
+      return next(err, false);
+    } else {
+      return next(null, match);
     }
   });
+};
 
 export default mongoose.model("User", userSchema);
