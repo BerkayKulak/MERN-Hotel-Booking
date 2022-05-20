@@ -25,3 +25,20 @@ export const register = async (req, res) => {
     return res.status(400).send("Error. Try again.");
   }
 };
+
+export const login = async (req, res) => {
+  console.log(req.body);
+  const { email, password } = req.body;
+  try {
+    let user = await User.findOne({ email }).exec();
+    if (!user) res.status(400).send("User with that email not found");
+    user.comparePassword(password, (err, match) => {
+      console.log("COMPARE PASSWORD IN LOGIN ERR", err);
+      if (!match || err) return res.status(400).send("Wrong password");
+      
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Signin failed");
+  }
+};
