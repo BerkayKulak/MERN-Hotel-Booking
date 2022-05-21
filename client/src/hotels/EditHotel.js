@@ -16,17 +16,17 @@ const EditHotel = ({ match }) => {
     title: "",
     content: "",
     location: "",
-    image: "",
     price: "",
     from: "",
     to: "",
     bed: "",
   });
+  const [image, setImage] = useState("");
   const [preview, setPreview] = useState(
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
   // destructuring variables from state
-  const { title, content, image, price, from, to, bed, location } = values;
+  const { title, content, price, from, to, bed, location } = values;
 
   useEffect(() => {
     loadSellerHotel();
@@ -65,11 +65,11 @@ const EditHotel = ({ match }) => {
   const handleImageChange = (e) => {
     // console.log(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
-    setValues({ ...values, image: e.target.files[0] });
+    setValues(e.target.files[0]);
   };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setImage({ ...values, [e.target.name]: e.target.value });
   };
 
   return (
