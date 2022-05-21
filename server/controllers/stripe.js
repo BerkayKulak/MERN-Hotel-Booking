@@ -11,7 +11,7 @@ export const createConnectAccount = async (req, res) => {
   // 2. if user don't have stripe_account_id yet, create now
   if (!user.stripe_account_id) {
     const account = await stripe.accounts.create({
-      type: "express",
+      type: "standard",
     });
     console.log("ACCOUNT ===> ", account);
     user.stripe_account_id = account.id;
