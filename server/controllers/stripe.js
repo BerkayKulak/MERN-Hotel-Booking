@@ -98,3 +98,29 @@ export const payoutSetting = async (req, res) => {
     console.log("STRIPE PAYOUT SETTING ERR ", err);
   }
 };
+
+export const stripeSessionId = async (req, res) => {
+  // console.log("you hit stripe session id", req.body.hotelId);
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        name: "Hotel booking",
+        amount: 1000,
+        currency: "usd",
+        quantity: 1,
+      },
+    ],
+    payment_intent_data: {
+      application_fee_amount: 123,
+      transfer_data: {
+        destination: "acct_1IAQGbPXFVzBS7kB",
+      },
+    },
+    success_url: process.env.STRIPE_SUCCESS_URL,
+    cancel_url: process.env.STRIPE_CANCEL_URL,
+  });
+
+  console.log("SESSION =====> ", session);
+};
