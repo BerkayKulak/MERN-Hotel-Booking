@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DashboardNav from "../components/DashboardNav";
 import ConnectNav from "../components/ConnectNav";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { HomeOutlined } from "@ant-design/icons";
 import { createConnectAccount } from "../actions/stripe";
+import { sellerHotels } from "../actions/hotel";
 import { toast } from "react-toastify";
+import SmallCard from "../components/cards/SmallCard";
 
 const DashboardSeller = () => {
   const { auth } = useSelector((state) => ({ ...state }));
+  const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    loadSellersHotels();
+  }, []);
+
+  const loadSellersHotels = async () => {
+    let { data } = await sellerHotels(auth.token);
+    setHotels(data);
+  };
 
   const handleClick = async () => {
     setLoading(true);
@@ -35,6 +47,17 @@ const DashboardSeller = () => {
             + Add New
           </Link>
         </div>
+      </div>
+
+      <div className="row">
+        {hotels.map((h) => (
+          <SmallCard
+            key={h._id}
+            h={h}
+            showViewMoreButton={false}
+            owner={true}
+          />
+        ))}
       </div>
     </div>
   );
