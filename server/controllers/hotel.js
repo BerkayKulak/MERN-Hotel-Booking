@@ -33,6 +33,7 @@ export const create = async (req, res) => {
 };
 
 export const hotels = async (req, res) => {
+  // let all = await Hotel.find({ from: { $gte: new Date() } })
   let all = await Hotel.find({})
     .limit(24)
     .select("-image.data")
