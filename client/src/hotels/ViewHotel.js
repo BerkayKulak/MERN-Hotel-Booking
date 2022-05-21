@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useStore } from "react-redux";
 import { read, diffDays } from "../actions/hotel";
+import { getSessionId } from "../actions/stripe";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
@@ -21,12 +22,12 @@ const ViewHotel = ({ match, history }) => {
     setImage(`${process.env.REACT_APP_API}/hotel/image/${res.data._id}`);
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
     if (!auth) history.push("/login");
-    console.log(
-      "get session id from stripe to shwo a button > checkout with stripe"
-    );
+    console.log(auth.token, match.params.hotelId);
+    let res = await getSessionId(auth.token, match.params.hotelId);
+    console.log("get sessionid resposne", res.data.sessionId);
   };
 
   return (
