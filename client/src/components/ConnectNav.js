@@ -30,8 +30,8 @@ const ConnectNav = () => {
     setLoading(true);
     try {
       const res = await payoutSetting(token);
-      console.log("RES FOR PAYOUT SETTING LINK", res);
-      // window.location.href = res.data
+      // console.log("RES FOR PAYOUT SETTING LINK", res);
+      window.location.href = res.data.url;
       setLoading(false);
     } catch (err) {
       console.log(err);
