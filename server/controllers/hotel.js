@@ -54,6 +54,13 @@ export const sellerHotels = async (req, res) => {
     .select("-image.data")
     .populate("postedBy", "_id name")
     .exec();
-  console.log(all);
+  // console.log(all);
   res.send(all);
+};
+
+export const remove = async (req, res) => {
+  let removed = await Hotel.findByIdAndDelete(req.params.hotelId)
+    .select("-image.data")
+    .exec();
+  res.json(removed);
 };
