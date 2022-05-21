@@ -39,3 +39,11 @@ export const hotels = async (req, res) => {
   // console.log(all);
   res.json(all);
 };
+
+export const image = async (req, res) => {
+  let hotel = await Hotel.findById(req.params.hotelId).exec();
+  if (hotel && hotel.image && hotel.image.data !== null) {
+    res.set("Content-Type", hotel.image.contentType);
+    return res.send(hotel.image.data);
+  }
+};

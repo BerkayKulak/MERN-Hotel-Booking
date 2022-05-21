@@ -6,9 +6,10 @@ const router = express.Router();
 // middleware
 import { requireSignin } from "../middlewares";
 // controllers
-import { create, hotels } from "../controllers/hotel";
+import { create, hotels, image } from "../controllers/hotel";
 
 router.post("/create-hotel", requireSignin, formidable(), create);
 router.get("/hotels", hotels);
+router.get("/hotel/image/:hotelId", image);
 
 module.exports = router;
